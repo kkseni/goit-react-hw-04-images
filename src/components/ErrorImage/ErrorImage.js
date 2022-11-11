@@ -1,4 +1,4 @@
-import { ErrorImg, ErrorContainer } from './ErrorImage.styled.js';
+import { ErrorImg, ErrorContainer } from './ErrorImage.styled';
 
 const ErrorImage = () => {
   return (

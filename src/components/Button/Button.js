@@ -1,18 +1,21 @@
-import PropTypes from 'prop-types';
+import { useContext } from 'react';
+import { CounterContext } from 'components/App/App';
 
 import { ButtonSt, ContainerBtn } from './Button.styled';
-// import Loader from 'components/Loader';
 
-const Button = ({ onClick }) => {
+const Button = () => {
+  // "UseContext"
+  const { onLoadMore } = useContext(CounterContext);
+
   return (
     <ContainerBtn>
-      <ButtonSt onClick={onClick}>Load more</ButtonSt>
+      <ButtonSt onClick={onLoadMore}>Load more</ButtonSt>
     </ContainerBtn>
   );
 };
 
-Button.propTypes = {
-  onClick: PropTypes.func,
-};
+// Button.propTypes = {
+//   onClick: PropTypes.func,
+// };
 
 export default Button;

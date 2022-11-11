@@ -1,50 +1,44 @@
-import { Component } from 'react';
-import PropTypes from 'prop-types';
-import { ModalSt, ModalOverlaySt, BigPhoto } from './Modal.styled';
+import { useEffect, useContext } from 'react';
 import { createPortal } from 'react-dom';
+import { CounterContext } from 'components/App/App';
+import { ModalSt, ModalOverlaySt, BigPhoto } from './Modal.styled';
 
 const modalRoot = document.querySelector('#modal-root');
 
-class Modal extends Component {
-  // Ставлю слухач на цикл
-  componentDidMount() {
-    window.addEventListener('keydown', this.handleKeyDown);
-  }
-  //  Знімаю слухач з цикла
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleKeyDown);
-  }
+const Modal = () => {
+  // Пропси
+  const { closeModal, largeImageURL } = useContext(CounterContext);
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  });
 
   // Закривання модального вікна по "Ескейпу"
-  handleKeyDown = e => {
+  const handleKeyDown = e => {
     if (e.code === 'Escape') {
-      this.props.onClose();
+      closeModal();
     }
   };
 
-  // Закривання модальноо вікна по кліку на "Бекдроп"
-  handleBackdropClick = e => {
+  // Закривання модального вікна по кліку на "Бекдроп"
+  const handleBackdropClick = e => {
     if (e.currentTarget === e.target) {
-      this.props.onClose();
+      closeModal();
     }
   };
 
-  render() {
-    return createPortal(
-      <ModalOverlaySt onClick={this.handleBackdropClick}>
-        <ModalSt>
-          <BigPhoto src={this.props.children} alt="qwwqwe" />
-        </ModalSt>
-      </ModalOverlaySt>,
-      modalRoot
-    );
-  }
-}
-
-Modal.propTypes = {
-  children: PropTypes.string.isRequired,
-  onClick: PropTypes.func,
-  onClose: PropTypes.func,
+  return createPortal(
+    <ModalOverlaySt onClick={handleBackdropClick}>
+      <ModalSt>
+        <BigPhoto src={largeImageURL} alt="Photo" />
+      </ModalSt>
+    </ModalOverlaySt>,
+    modalRoot
+  );
 };
 
 export default Modal;
